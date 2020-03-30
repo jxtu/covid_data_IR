@@ -1,10 +1,9 @@
 import time
 
 from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Index, Document, Text, Keyword, Integer
+from elasticsearch_dsl import Index, Document, Text, Keyword, Integer, Nested, InnerDoc
 from elasticsearch_dsl.analysis import tokenizer, analyzer
 from elasticsearch import helpers
-from elasticsearch.exceptions import NotFoundError
 from elasticsearch_dsl.connections import connections
 
 import pandas as pd
@@ -17,12 +16,13 @@ my_analyzer = analyzer('custom',
 
 
 class CovidMeta(Document):
+    # TODO: be familiar with different field type
     sha = Text()
     title = Text()
     abstract = Text()
-    authors = Text()
+    authors = InnerDoc()
     journal = Text()
-    publish_time = Text()
+    publish_time = InnerDoc()
 
     def save(self, *args, **kwargs):
         return super(CovidMeta, self).save(*args, **kwargs)
