@@ -6,6 +6,10 @@ import pandas
 def get_sub_meta_csv(in_file: str, fields: Sequence, allow_empty: bool, out_file: str):
     """
     generate a new covid meta csv based on the given fields
+    :param in_file: original meta csv
+    :param fields: a list of fields you want to keep
+    :param allow_empty: allow empty values (N/A)
+    :param out_file: output file path
     :return:
     """
     csv_df = pandas.read_csv(in_file)
