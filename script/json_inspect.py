@@ -71,12 +71,6 @@ if __name__ == "__main__":
     parser.add_argument('json_file')
     args = parser.parse_args()
     pprint.pprint(JsonInspector(path.join(args.json_file)).info, width=120, indent=4)
-    # json_file = '../raw_data/comm_use_subset/0a00a6df208e068e7aa369fb94641434ea0e6070.json'
-    # DIR_PATH = '../raw_data/comm_use_subset'
-    # doc_names = listdir(DIR_PATH)
-    # for name in doc_names:
-    #     pprint.pprint(JsonInspector(path.join(DIR_PATH, name)).info, width=120)
-    #     break
 
 
 

@@ -49,6 +49,21 @@ class ParseMetaData(object):
             date = {'year': date[:4], 'month': self.DATE_ABBR.get(date[5:8], '')}
         self.meta_doc['publish_time'] = date
 
+    def _gen_es_date(self):
+        """
+        in the format as xxxx-xx-xx
+        applied after self._parse_date()
+        :return:
+        """
+        # hard code the day as the first day of each month
+        year = self.meta_doc['publish_time']['year']
+        month = self.meta_doc['publish_time']['month']
+        if not year:
+            year = '2019'
+        if not month:
+            month = '01'
+        self.meta_doc['es_date'] = '-'.join([year, month, '01'])
+
     def _get_word_shape_mapping(self):
         self.WORD_SHAPE_MAPPING = {}
         self.WORD_SHAPE_MAPPING.update(zip(digits, len(digits) * 'd'))
@@ -60,6 +75,7 @@ class ParseMetaData(object):
         self.meta_doc = meta_doc
         self._parse_authors()
         self._parse_date()
+        self._gen_es_date()
 
 
 if __name__ == "__main__":

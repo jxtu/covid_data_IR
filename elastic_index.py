@@ -1,7 +1,7 @@
 import time
 
 from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Index, Document, Text, Keyword, Integer, Nested, InnerDoc
+from elasticsearch_dsl import Index, Document, Text, Keyword, Integer, InnerDoc, Date
 from elasticsearch_dsl.analysis import tokenizer, analyzer
 from elasticsearch import helpers
 from elasticsearch_dsl.connections import connections
@@ -21,8 +21,9 @@ class CovidMeta(Document):
     title = Text()
     abstract = Text()
     authors = InnerDoc()
-    journal = Text()
+    journal = Keyword()
     publish_time = InnerDoc()
+    es_date = Date()
 
     def save(self, *args, **kwargs):
         return super(CovidMeta, self).save(*args, **kwargs)
@@ -55,7 +56,8 @@ class ESIndex(object):
                 "abstract": doc['abstract'],
                 "authors": doc['authors'],
                 "journal": doc['journal'],
-                "publish_time": doc['publish_time']}
+                "publish_time": doc['publish_time'],
+                "es_date": doc['es_date']}
 
     def load(self, docs):
         helpers.bulk(self.es, self.to_bulk_iterable(docs))
