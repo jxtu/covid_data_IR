@@ -21,6 +21,9 @@ class CovidMeta(Document):
     title = Text()
     abstract = Text()
     authors = InnerDoc()
+    authors_full = InnerDoc()
+    institutions = InnerDoc()
+    countries = InnerDoc()
     journal = Keyword()
     publish_time = InnerDoc()
     es_date = Date()
@@ -55,6 +58,9 @@ class ESIndex(object):
                 "title": doc['title'],
                 "abstract": doc['abstract'],
                 "authors": doc['authors'],
+                "authors_full": doc.get('authors_full', []),
+                "institutions": doc.get('institutions', []),
+                "countries": doc.get('countries', []),
                 "journal": doc['journal'],
                 "publish_time": doc['publish_time'],
                 "es_date": doc['es_date']}

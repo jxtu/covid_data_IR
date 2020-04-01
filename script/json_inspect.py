@@ -6,16 +6,11 @@ import argparse
 
 
 class JsonInspector(object):
-    """
-    paper_id
-    metadata
-    abstract
-    body_text
-    bib_entries
-    ref_entries
-    back_matter
-    """
     def __init__(self, in_file):
+        """
+        inspect individual json doc
+        :param in_file:
+        """
         with open(in_file, 'r') as f:
             self.doc = json.load(f)
         self.info = {}
@@ -60,10 +55,6 @@ class JsonInspector(object):
         ref_counter.update(refs[k]['type'] for k in refs)
         for k in ref_counter:
             self.info[f'{k}s_count'] = ref_counter[k]
-
-    def _inspect_abstract(self):
-        # TODO:
-        abstract = self.doc['abstract']
 
 
 if __name__ == "__main__":

@@ -4,10 +4,15 @@ WHO #Covidence,has_full_text,full_text_file
 """
 from typing import Sequence
 from string import digits, ascii_lowercase, ascii_uppercase
+from data.doc import ParseJsonDoc
 
 
 class ParseMetaData(object):
-    def __init__(self, fields: Sequence):
+    def __init__(self):
+        """
+        parse/clean/modify fields of meta csv
+        create new additional fields before generate ES Index
+        """
         # TODO: add choices for selecting fields
         self.meta_doc = None
         self._get_word_shape_mapping()
@@ -20,8 +25,10 @@ class ParseMetaData(object):
         except KeyError:
             return
         authors = authors.split(';')
-        authors = [self._split_name(author.split(', ')) for author in authors]
-        self.meta_doc['authors'] = authors
+        authors_split = [self._split_name(author.split(', ')) for author in authors]
+        authors_full = [' '.join(author.split(', ')) for author in authors]
+        self.meta_doc['authors'] = authors_split
+        self.meta_doc['authors_full'] = authors_full
 
     @staticmethod
     def _split_name(name: Sequence):
@@ -51,7 +58,7 @@ class ParseMetaData(object):
 
     def _gen_es_date(self):
         """
-        in the format as xxxx-xx-xx
+        in the format of 2019-10-08
         applied after self._parse_date()
         :return:
         """
