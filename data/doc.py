@@ -1,21 +1,14 @@
 import json
-import pprint
 from os import listdir, path
-from collections import Counter, defaultdict
-import argparse
 
 
 class ParseJsonDoc(object):
-    """
-    paper_id
-    metadata
-    abstract
-    body_text
-    bib_entries
-    ref_entries
-    back_matter
-    """
     def __init__(self, file_dir, json_name):
+        """
+        parse individual json doc
+        :param file_dir:
+        :param json_name:
+        """
         self.fields = {}
         try:
             if json_name.endswith('.json'):
@@ -30,6 +23,10 @@ class ParseJsonDoc(object):
             self._parse_meta()
 
     def _parse_meta(self):
+        """
+        get institutions and countries from json doc
+        :return:
+        """
         meta = self.doc['metadata']
         authors = meta['authors']
         institutions = []
@@ -51,33 +48,29 @@ class ParseJsonDoc(object):
         self.fields['institutions'] = list(dict.fromkeys(institutions).keys())
         self.fields['countries'] = list(dict.fromkeys(countries).keys())
 
+    # TODO: add more parsable fields
 
-    # def _inspect_body_text(self):
-    #     body_t = self.doc['body_text']
-    #     sections = dict.fromkeys([b['section'] for b in body_t])
-    #     sections = tuple(sections.keys())
-    #     self.info['sections_count'] = len(sections)
-    #
-    # def _inspect_bib(self):
-    #     bibs = self.doc['bib_entries']
-    #     bibs_count = len(bibs)
-    #     self.info['bibs_count'] = bibs_count
-    #
-    # def _inspect_ref(self):
-    #     ref_counter = Counter()
-    #     refs = self.doc['ref_entries']
-    #     ref_counter.update(refs[k]['type'] for k in refs)
-    #     for k in ref_counter:
-    #         self.info[f'{k}s_count'] = ref_counter[k]
-    #
-    # def _inspect_abstract(self):
-    #     # TODO:
-    #     abstract = self.doc['abstract']
+    def _inspect_body_text(self):
+        # TODO:
+        body_t = self.doc['body_text']
+
+    def _inspect_bib(self):
+        # TODO:
+        bibs = self.doc['bib_entries']
+
+    def _inspect_ref(self):
+        # TODO:
+        refs = self.doc['ref_entries']
+
+    def _inspect_abstract(self):
+        # TODO:
+        abstract = self.doc['abstract']
 
 
 if __name__ == "__main__":
+    # for testing
     for p in listdir('../raw_data/comm_use_subset'):
-        ParseJsonDoc('../raw_data/comm_use_subset/' + p)
+        ParseJsonDoc('../raw_data/comm_use_subset/', p)
 
 
 

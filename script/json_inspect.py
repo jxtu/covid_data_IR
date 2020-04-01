@@ -1,7 +1,7 @@
 import json
 import pprint
-from os import listdir, path
-from collections import Counter, defaultdict
+from os import path
+from collections import Counter
 import argparse
 
 

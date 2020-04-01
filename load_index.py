@@ -9,17 +9,25 @@ from data.doc import ParseJsonDoc
 
 
 def load_es_index(index_name, data_dir: str, meta_file: str):
+    """
+    build es index using COVID meta csv as the main entry
+    :param index_name: es index name
+    :param data_dir: directory where you have the meta csv
+    :param meta_file: meta csv file name
+    :return:
+    """
     meta_parser = ParseMetaData()
     st = time.time()
     csv_df = pd.read_csv(path.join(data_dir, meta_file))
     docs = []
+
     for i, item in enumerate(csv_df.iloc):
-        item_dict = item.to_dict()
+        item_dict = item.to_dict()  # read in each line from meta csv and convert it into a meta dict
         doc_parser = ParseJsonDoc(data_dir, item_dict['sha'])
         if doc_parser.fields:
-            item_dict.update(doc_parser.fields)
-        meta_parser(item_dict)
-        docs.append(meta_parser.meta_doc)
+            item_dict.update(doc_parser.fields)  # parse each corresponding json doc and update the meta dict
+        meta_parser(item_dict)  # further parse the updated meta dict
+        docs.append(meta_parser.meta_dict)
     ESIndex(index_name, docs)
     print(f"=== Built {index_name} in {round(time.time() - st, 4)} seconds ===")
 
